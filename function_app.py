@@ -41,7 +41,7 @@ from functions.http_trigger import bp as http_bp
 # from functions.salesforce.crud_blob import bp as crud_blob_bp
 # from functions.salesforce.crud_transaction_events import bp as crud_transaction_events
 
-# from functions.hubspot.contact.create_leads import bp as hs_create_leads
+from functions.hubspot.contact.create_leads import bp as hs_create_leads
 
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -93,6 +93,6 @@ app.register_functions(http_bp)
 # app.register_functions(crud_blob_bp)
 # app.register_functions(crud_transaction_events)
 
-# app.register_functions(hs_create_leads)
+app.register_functions(hs_create_leads)
 
 
