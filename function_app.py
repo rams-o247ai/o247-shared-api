@@ -33,15 +33,15 @@ from functions.http_trigger import bp as http_bp
 # from functions.clienthubdb.line_items.get_line_items_for_subscriptiondb import bp as db_line_items_for_subscriptiondb
 
 #salesforce and logging functions to be imported here
-from functions.salesforce.schedule_call import bp as add_contact_queue
-from functions.salesforce.update_opportunity import bp as update_opportunity_note
-from functions.salesforce.process_contact_queue import bp as process_contact_queue
-from functions.salesforce.outgoing_queue_listener import bp as outgoing_queue_listener
-from functions.salesforce.call_listener import bp as call_listener_bp
-from functions.salesforce.crud_blob import bp as crud_blob_bp
-from functions.salesforce.crud_transaction_events import bp as crud_transaction_events
+# from functions.salesforce.schedule_call import bp as add_contact_queue
+# from functions.salesforce.update_opportunity import bp as update_opportunity_note
+# from functions.salesforce.process_contact_queue import bp as process_contact_queue
+# from functions.salesforce.outgoing_queue_listener import bp as outgoing_queue_listener
+# from functions.salesforce.call_listener import bp as call_listener_bp
+# from functions.salesforce.crud_blob import bp as crud_blob_bp
+# from functions.salesforce.crud_transaction_events import bp as crud_transaction_events
 
-from functions.hubspot.contact.create_leads import bp as hs_create_leads
+# from functions.hubspot.contact.create_leads import bp as hs_create_leads
 
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -85,14 +85,14 @@ app.register_functions(http_bp)
 
 
 #salesforce and logging functions
-app.register_functions(add_contact_queue)
-app.register_functions(update_opportunity_note)
-app.register_functions(process_contact_queue)
-app.register_functions(outgoing_queue_listener)
-app.register_functions(call_listener_bp)
-app.register_functions(crud_blob_bp)
-app.register_functions(crud_transaction_events)
+# app.register_functions(add_contact_queue)
+# app.register_functions(update_opportunity_note)
+# app.register_functions(process_contact_queue)
+# app.register_functions(outgoing_queue_listener)
+# app.register_functions(call_listener_bp)
+# app.register_functions(crud_blob_bp)
+# app.register_functions(crud_transaction_events)
 
-app.register_functions(hs_create_leads)
+# app.register_functions(hs_create_leads)
 
 
