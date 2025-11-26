@@ -14,7 +14,7 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   PYTHON_VERSION: '3.12' # set this to the python version to use (supports 3.6, 3.7, 3.8)
   PACKAGE_CODE_DIR: './package_code/'
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -59,7 +59,12 @@ jobs:
 
           echo "Build completed successfully."
 
-
+      - name: Zip artifact for deployment
+        run: |
+          cd ${{ env.PACKAGE_CODE_DIR }}
+          zip -r9 ../release.zip ./*
+          cd ..
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
