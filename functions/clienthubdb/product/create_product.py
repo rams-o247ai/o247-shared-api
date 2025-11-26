@@ -17,6 +17,7 @@ DB_CONFIG = {
     "database": os.getenv("DB_NAME"),
     "user": os.getenv("DB_USER"),
     "password": os.getenv("DB_PASSWORD"),
+    "options": "-c search_path=" + os.getenv("DB_SCHEMA")
 }
 
 VAPI_URL = f"{os.getenv('VAPI_URL')}assistant"

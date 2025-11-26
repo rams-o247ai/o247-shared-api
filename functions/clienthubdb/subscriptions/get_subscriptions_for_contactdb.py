@@ -12,7 +12,8 @@ DB_CONFIG = {
     "port": os.getenv("DB_PORT"),
     "database": os.getenv("DB_NAME"),
     "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD")
+    "password": os.getenv("DB_PASSWORD"),
+    "options": "-c search_path=" + os.getenv("DB_SCHEMA")
 }
 
 @bp.route(route="db/contacts/{contactId}/subscriptions", methods=["GET"], auth_level=func.AuthLevel.FUNCTION)
