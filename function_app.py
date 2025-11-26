@@ -3,7 +3,7 @@ load_dotenv()
 
 from azure import functions as func
 
-from functions.chat_completions import bp as chat_bp
+# from functions.chat_completions import bp as chat_bp
 from functions.http_trigger import bp as http_bp
 # from functions.ghl.get_contact import bp as gt_contact
 # from functions.ghl.get_invoices import bp as gt_invoices
@@ -46,7 +46,7 @@ from functions.http_trigger import bp as http_bp
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 app.register_functions(http_bp)
-app.register_functions(chat_bp)
+# app.register_functions(chat_bp)
 
 #ghl functions below
 # app.register_functions(gt_contact)
