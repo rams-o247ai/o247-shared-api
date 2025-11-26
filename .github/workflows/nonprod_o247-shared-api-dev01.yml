@@ -13,7 +13,6 @@ on:
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   PYTHON_VERSION: '3.12' # set this to the python version to use (supports 3.6, 3.7, 3.8)
-  PACKAGE_CODE_DIR: './package_code/'
 
 jobs:
   build:
@@ -30,35 +29,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Create, start virtual environment and install dependencies
+      - name: Create and start virtual environment
         run: |
-          INCLUDE="functions/ function_app.py host.json requirements.txt local.settings.json"
-          echo "Machine info: $(uname --all)"
-          echo "Listing the available Python exec paths..."
-          ls -la /usr/bin/python*
-          echo "Used Python version: $(python --version) ($(which python))"
-          echo "Current working directory: $(pwd)"
-          # Install Python Dependencies
-          echo "Upgrading pip package installer..."
-          python -m pip install --upgrade pip
-          echo "Installing dependecies..."
-          mkdir -p ${{ env.PACKAGE_CODE_DIR }}
-          rm -r ${{ env.PACKAGE_CODE_DIR }}
-          python -m pip install -r requirements.txt --target=${{ env.PACKAGE_CODE_DIR }} --no-cache-dir --force-reinstall --upgrade
-          # Move package release artifacts to package_code directory
-          echo "Copying Package Release Artifacts to ${{ env.PACKAGE_CODE_DIR }} directory..."
-          cp -R $INCLUDE --target-directory=${{ env.PACKAGE_CODE_DIR }}
-          echo "Azure Function deployment directory created. ${{ env.PACKAGE_CODE_DIR }} contains:"
-          ls ${{ env.PACKAGE_CODE_DIR }}
-          echo "Build completed successfully."
+          python -m venv venv
+          source venv/bin/activate
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       # Optional: Add step to run tests here
 
       - name: Zip artifact for deployment
-        run: |
-          cd ${{ env.PACKAGE_CODE_DIR }}
-          zip -r ../release.zip ./*
-          cd ..
-
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -90,7 +72,6 @@ jobs:
           app-name: 'o247-shared-api-dev01'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7AE1C8C24A864C56AB0711BF0CCD7ADB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_045D01B7A0294E1A87BECC696B4DAA81 }}
           sku: 'flexconsumption'
         
