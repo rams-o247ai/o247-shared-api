@@ -29,18 +29,35 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Create and start virtual environment
+      - name: Create, start virtual environment and install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          INCLUDE="functions/ function_app.py host.json requirements.txt local.settings.json"
+          echo "Machine info: $(uname --all)"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          echo "Listing the available Python exec paths..."
+          ls -la /usr/bin/python*
 
-      # Optional: Add step to run tests here
+          echo "Used Python version: $(python --version) ($(which python))"
+          echo "Current working directory: $(pwd)"
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+          # Install Python Dependencies
+          echo "Upgrading pip package installer..."
+          python -m pip install --upgrade pip
+
+          echo "Installing dependecies..."
+          mkdir -p ${{ env.PACKAGE_CODE_DIR }}
+          rm -r ${{ env.PACKAGE_CODE_DIR }}
+          python -m pip install -r requirements.txt --target=${{ env.PACKAGE_CODE_DIR }} --no-cache-dir --force-reinstall --upgrade
+
+          # Move package release artifacts to package_code directory
+          echo "Copying Package Release Artifacts to ${{ env.PACKAGE_CODE_DIR }} directory..."
+          cp -R $INCLUDE --target-directory=${{ env.PACKAGE_CODE_DIR }}
+
+          echo "Azure Function deployment directory created. ${{ env.PACKAGE_CODE_DIR }} contains:"
+          ls ${{ env.PACKAGE_CODE_DIR }}
+
+          echo "Build completed successfully."
+
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -72,6 +89,7 @@ jobs:
           app-name: 'o247-shared-api-dev01'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_045D01B7A0294E1A87BECC696B4DAA81 }}
           sku: 'flexconsumption'
         
